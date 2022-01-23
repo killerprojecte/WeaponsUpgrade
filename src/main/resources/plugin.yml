@@ -1,0 +1,6 @@
+name: WeaponsUpgrade
+version: '${version}'
+main: flyproject.weaponsupgrade.WeaponsUpgrade
+api-version: 1.16
+authors: [ FlyProject ]
+description: Kill mobs to upgrade your weapons
