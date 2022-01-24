@@ -15,6 +15,8 @@ import java.util.Objects;
 
 public final class WeaponsUpgrade extends JavaPlugin {
 
+    public static boolean debug = false;
+
     @Override
     public void onEnable() {
         getLogger().info("This is a Beta Tag Version! If find any bug pls tell me.");
@@ -53,8 +55,14 @@ public final class WeaponsUpgrade extends JavaPlugin {
                                     im.setLore(getNewList(lorei,suffix+maxpoint+symbol+maxpoint,uglore));
                                     is.setItemMeta(im);
                                     p.setItemInHand(is);
+                                    if (debug) getLogger().info("58");
+                                    return;
                                 } else {
-
+                                    im.setLore(getNewList(lorei,suffix+np+symbol+maxpoint,uglore));
+                                    is.setItemMeta(im);
+                                    p.setItemInHand(is);
+                                    if (debug) getLogger().info("64");
+                                    return;
                                 }
                             }
                         }
