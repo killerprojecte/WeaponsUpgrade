@@ -1,7 +1,12 @@
 package flyproject.weaponsupgrade;
 
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -19,8 +24,9 @@ public final class WeaponsUpgrade extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("This is a Beta Tag Version! If find any bug pls tell me.");
-
+        getLogger().warning("这是一个测试版本 如有BUG请及时反馈");
+        System.out.println("注册监听器...");
+        saveDefaultConfig();
         // Plugin startup logic
 
     }
@@ -48,20 +54,18 @@ public final class WeaponsUpgrade extends JavaPlugin {
                             int point = getNowPoint(txt,suffix,symbol,maxpoint);
                             if (point<100 && point>=0){
                                 int np = point + 1;
-                                String ugdisplay = cl(getConfig().getString("weapons." + key + ".upgrade.displayname"));
-                                String uglore = cl(getConfig().getString("weapons." + key + ".upgrade.lore"));
                                 if (np>=100){
-                                    im.setDisplayName(ugdisplay);
-                                    im.setLore(getNewList(lorei,suffix+maxpoint+symbol+maxpoint,uglore));
-                                    is.setItemMeta(im);
+                                    short dura = is.getDurability();
+                                    is = (ItemStack) getConfig().get("weapons." + key + ".upgrade.itemstack");
+                                    is.setDurability(dura);
                                     p.setItemInHand(is);
-                                    if (debug) getLogger().info("58");
+                                    if (debug) getLogger().info(":>=100 Reward");
                                     return;
                                 } else {
-                                    im.setLore(getNewList(lorei,suffix+np+symbol+maxpoint,uglore));
+                                    im.setLore(getNewList(lorei,suffix+point+symbol+maxpoint,suffix+np+symbol+maxpoint));
                                     is.setItemMeta(im);
                                     p.setItemInHand(is);
-                                    if (debug) getLogger().info("64");
+                                    if (debug) getLogger().info(":<100 Reward");
                                     return;
                                 }
                             }
@@ -73,8 +77,26 @@ public final class WeaponsUpgrade extends JavaPlugin {
     }
 
     @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player))return false;
+        Player p = (Player) sender;
+        if (p.getItemInHand().getType().equals(Material.AIR)) {p.sendMessage(cl("&c请在手上持有物品"));
+            return false;}
+        ItemStack is = p .getItemInHand();
+        p.spigot().sendMessage(getClickHoverText(cl("&a点击复制ItemStack"),cl("&8点击复制"), ClickEvent.Action.COPY_TO_CLIPBOARD,is.toString()));
+        return super.onCommand(sender, command, label, args);
+    }
+
+    @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public static TextComponent getClickHoverText(String text, String hovertext, ClickEvent.Action action, String vaule){
+        TextComponent mainComponent = new TextComponent(text);
+        mainComponent.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hovertext).create()));
+        mainComponent.setClickEvent(new ClickEvent(action,vaule));
+        return mainComponent;
     }
 
     public static String cl(String s){
