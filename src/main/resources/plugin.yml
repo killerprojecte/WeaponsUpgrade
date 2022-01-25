@@ -4,3 +4,11 @@ main: flyproject.weaponsupgrade.WeaponsUpgrade
 api-version: 1.16
 authors: [ FlyProject ]
 description: Kill mobs to upgrade your weapons
+commands:
+  weponsupgrade:
+    aliases:
+      - weu
+    permission: weponsupgrade.main
+permissions:
+  weponsupgrade.main:
+    default: op
