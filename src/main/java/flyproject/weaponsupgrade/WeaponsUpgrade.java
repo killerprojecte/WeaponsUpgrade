@@ -1,6 +1,7 @@
 package flyproject.weaponsupgrade;
 
 import net.md_5.bungee.api.chat.*;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -9,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public final class WeaponsUpgrade extends JavaPlugin {
+public final class WeaponsUpgrade extends JavaPlugin implements Listener {
 
     public static boolean debug = false;
 
@@ -26,7 +28,10 @@ public final class WeaponsUpgrade extends JavaPlugin {
     public void onEnable() {
         getLogger().warning("这是一个测试版本 如有BUG请及时反馈");
         System.out.println("注册监听器...");
+        Bukkit.getPluginManager().registerEvents(this,this);
         saveDefaultConfig();
+
+
         // Plugin startup logic
 
     }
@@ -80,6 +85,7 @@ public final class WeaponsUpgrade extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player))return false;
         Player p = (Player) sender;
+        reloadConfig();
         if (p.getItemInHand().getType().equals(Material.AIR)) {p.sendMessage(cl("&c请在手上持有物品"));
             return false;}
         ItemStack is = p .getItemInHand();

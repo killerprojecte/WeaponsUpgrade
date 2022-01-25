@@ -1,34 +1,21 @@
 weapons:
   test:
-    entity: "PLAYER"
+    entity: "ZOMBIE"
     lore:
       suffix: "&e升级进度: "
       symbol: "/"
       max: 100
-      #需要手动添加此Lore 格式为
-      #%suffix%0%symbol%%max%
+        #需要手动添加此Lore 格式为
+        #%suffix%0%symbol%%max%
       #示例: &e升级进度: 0/100
-    #支持类型
+      #支持类型
     type: "NETHERITE_SWORD"
     #名称识别
     displayname: "&7测试剑I"
     upgrade:
-      itemstack:
-  test2:
-    entity: "ZOMBIE"
-      lore:
-        suffix: "&e升级进度: "
-        symbol: "/"
-        max: 200
-        #需要手动添加此Lore 格式为
-        #%suffix%0%symbol%%max%
-        #示例: &e升级进度: 0/100
-      #支持类型
-      type:
-        - "NETHERITE_SWORD"
-      #名称识别
-      displayname: "&7测试剑II"
-      upgrade:
-        itemstack:
+      itemstack: 'ItemStack{NETHERITE_SWORD x 1, UNSPECIFIC_META:{meta-type=UNSPECIFIC,
+        display-name={"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"测试剑II"}],"text":""},
+        lore=[{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"升级进度:
+        0/200"}],"text":""}]}}'
 
 
