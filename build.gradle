@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.0"
 }
 
 group = 'flyproject'
@@ -19,6 +20,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    implementation fileTree(dir: 'libs',includes: ["*.jar"])
 }
 
 def targetJavaVersion = 8

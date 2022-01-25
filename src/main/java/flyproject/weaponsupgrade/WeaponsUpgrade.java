@@ -1,5 +1,6 @@
 package flyproject.weaponsupgrade;
 
+import flyproject.security.lib.CheckEngine;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,8 +13,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -26,7 +30,12 @@ public final class WeaponsUpgrade extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        getLogger().warning("这是一个测试版本 如有BUG请及时反馈");
+        if (!CheckEngine.get("WEU")){
+            getLogger().warning("无法加载插件或出现已知问题");
+            setEnabled(false);
+        }
+        descriptionFile();
+        if (getDescription().getVersion().contains("Beta")) getLogger().warning("这是一个测试版本 如有BUG请及时反馈");
         System.out.println("注册监听器...");
         Bukkit.getPluginManager().registerEvents(this,this);
         saveDefaultConfig();
@@ -36,18 +45,26 @@ public final class WeaponsUpgrade extends JavaPlugin implements Listener {
 
     }
     @EventHandler
-    public void onPlayerAttackEntity(EntityDamageByEntityEvent event){
-        if (!(event.getDamager() instanceof Player))return;
+    public void onPlayerAttackEntity(EntityDeathEvent event){
+        if (!(event.getEntity().getKiller() instanceof Player))return;
         if (getConfig().getConfigurationSection("weapons").getKeys(false) == null){
             getLogger().warning("配置为空无法注册 请添加配置");
         }
-        Player p = (Player) event.getDamager();
+        debug(event.getEntityType().name());
+        debug("设置Player");
+        Player p = (Player) event.getEntity().getKiller();
+        debug("遍历开始");
         for (String key : getConfig().getConfigurationSection("weapons").getKeys(false)){
-            if (getConfig().getString("weapons." + key + ".entity").equals(event.getEntityType().getName())){
+            debug(key);
+            if (getConfig().getString("weapons." + key + ".entity").equals(event.getEntityType().name())){
+                debug("满足实体");
                 if (p.getItemInHand().getItemMeta().getDisplayName().equals(cl(getConfig().getString("weapons." + key + ".displayname")))){
+                    debug("满足名称");
                     ItemStack is = p.getItemInHand();
                     ItemMeta im = is.getItemMeta();
-                    if (is.getType().name().equals(getConfig().getString("weapons." + key + ".type"))){
+                    debug("Type: " + is.getType());
+                    if (is.getType().toString().equals(getConfig().getString("weapons." + key + ".type"))){
+                        debug("满足Type");
                         List<String> lorei = Objects.requireNonNull(im.getLore());
                         List<String> newlore = new ArrayList();
                         String suffix = cl(getConfig().getString("weapons." + key + ".lore.suffix"));
@@ -136,6 +153,16 @@ public final class WeaponsUpgrade extends JavaPlugin implements Listener {
             return newlore;
         } else {
             return null;
+        }
+    }
+    public static PluginDescriptionFile des;
+
+    private void descriptionFile(){
+        des = getDescription();
+    }
+    public static void debug(String s){
+        if (des.getVersion().contains("DEV")){
+            System.out.println("[WEU][DEBUG] " + s);
         }
     }
 }
