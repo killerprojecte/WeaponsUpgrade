@@ -3,6 +3,8 @@ version: '${version}'
 main: flyproject.weaponsupgrade.WeaponsUpgrade
 api-version: 1.16
 authors: [ FlyProject ]
+depend:
+  - BlockCatcher
 description: Kill mobs to upgrade your weapons
 commands:
   weponsupgrade:

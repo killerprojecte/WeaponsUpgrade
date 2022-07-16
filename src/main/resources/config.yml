@@ -17,5 +17,25 @@ weapons:
         display-name={"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"测试剑II"}],"text":""},
         lore=[{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"升级进度:
         0/200"}],"text":""}]}}'
+mine:
+  test:
+    block: "DIAMOND_ORE"
+    lore:
+      suffix: "&e升级进度: "
+      symbol: "/"
+      max: 100
+        #需要手动添加此Lore 格式为
+      #%suffix%0%symbol%%max%
+      #示例: &e升级进度: 0/100
+      #支持类型
+    type: "NETHERITE_PICKAXE"
+    #名称识别
+    displayname: "&7测试稿I"
+    replace: false
+    upgrade:
+      itemstack: 'ItemStack{NETHERITE_SWORD x 1, UNSPECIFIC_META:{meta-type=UNSPECIFIC,
+        display-name={"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"测试稿II"}],"text":""},
+        lore=[{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"升级进度:
+        0/200"}],"text":""}]}}'
 
 

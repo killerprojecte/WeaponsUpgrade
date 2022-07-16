@@ -16,6 +16,10 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+    maven {
+        name = 'CoreProtect-repo'
+        url = 'https://maven.playpro.com/'
+    }
 }
 
 dependencies {
@@ -23,7 +27,7 @@ dependencies {
     implementation fileTree(dir: 'libs',includes: ["*.jar"])
 }
 
-def targetJavaVersion = 8
+def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -34,9 +38,7 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
-    }
+    options.release = 8;
 }
 
 tasks.withType(JavaCompile) {
